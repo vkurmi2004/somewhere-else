@@ -1,0 +1,179 @@
+/* =========================================
+   BUBBLE ROOM STYLES
+   ========================================= */
+
+body {
+    /* Deep midnight blue with subtle underwater gradient */
+    background: radial-gradient(circle at 50% 100%, #152238 0%, #080C16 100%);
+    overflow: hidden;
+    touch-action: none; /* Prevent accidental scrolling on mobile */
+}
+
+/* Header & Controls */
+.room-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.leave-link {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--transition-fast);
+    opacity: 0.7;
+}
+
+.leave-link:hover {
+    color: var(--text-main);
+    opacity: 1;
+}
+
+.sound-toggle {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    opacity: 0.7;
+    transition: all var(--transition-fast);
+    padding: 0.5rem;
+}
+
+.sound-toggle:hover {
+    color: var(--text-main);
+    opacity: 1;
+}
+
+/* Bubble Container */
+.room-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Bubbles */
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    /* Soft gradients, translucent */
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(182, 176, 198, 0.02) 60%, rgba(123, 139, 158, 0.1) 100%);
+    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), 
+                inset 10px 0 40px rgba(182, 176, 198, 0.1),
+                0 0 10px rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transform-origin: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    
+    /* Animation driven by JS vars */
+    animation: float var(--float-duration, 15s) ease-in-out infinite alternate, 
+               drift var(--drift-duration, 10s) ease-in-out infinite alternate;
+}
+
+/* Focus state for accessibility */
+.bubble:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+.bubble.popped {
+    opacity: 0 !important;
+    transform: scale(1.5) !important;
+    pointer-events: none;
+}
+
+/* Subtle particle effect background (optional, CSS only) */
+.room-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* Modal */
+.completion-modal {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    background: rgba(11, 16, 26, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: var(--space-xl) var(--space-lg);
+    border-radius: 24px;
+    border: 1px solid var(--border-subtle);
+    max-width: 90%;
+}
+
+.completion-modal.hidden {
+    display: none;
+}
+
+.completion-text {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--text-main);
+    margin-bottom: var(--space-xs);
+}
+
+.completion-subtext {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.completion-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+}
+
+@media (min-width: 600px) {
+    .completion-actions {
+        flex-direction: row;
+    }
+}
+
+/* Animations */
+@keyframes float {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(var(--float-y, -100px)) scale(1.05); }
+}
+
+@keyframes drift {
+    0% { margin-left: 0; }
+    100% { margin-left: var(--drift-x, 50px); }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .bubble {
+        animation: none;
+        /* Keep them stationary but floating slightly */
+        transition: opacity 0.5s ease, transform 0.3s ease;
+    }
+    
+    .bubble:hover, .bubble:focus-visible {
+        transform: scale(1.05);
+    }
+}
+
+/* Mobile specific */
+@media (max-width: 768px) {
+    .room-header {
+        padding: var(--space-md);
+    }
+}

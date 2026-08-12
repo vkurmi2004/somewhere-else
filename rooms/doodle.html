@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Doodle Room | Somewhere Else</title>
+    <meta name="description" content="There is nothing to make here. Draw anyway.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/doodle.css">
+</head>
+<body>
+    
+    <header class="room-header">
+        <button id="btn-leave" class="leave-link" aria-label="Leave Doodle Room">
+            <span class="arrow">&larr;</span> Leave Room
+        </button>
+    </header>
+
+    <main class="room-container">
+        <!-- Canvas for drawing -->
+        <canvas id="doodle-canvas" aria-label="Interactive drawing canvas"></canvas>
+        
+        <!-- Intro Message -->
+        <div id="initial-message" class="initial-message fade-in">
+            <p>There is nothing to make here.<br>Draw anyway.</p>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar" role="toolbar" aria-label="Drawing Tools">
+            
+            <div class="tool-group" role="group" aria-label="Brush Sizes">
+                <button class="tool-btn brush-size active" data-size="4" aria-label="Small Brush" aria-pressed="true">
+                    <span class="dot size-sm"></span>
+                </button>
+                <button class="tool-btn brush-size" data-size="12" aria-label="Medium Brush" aria-pressed="false">
+                    <span class="dot size-md"></span>
+                </button>
+                <button class="tool-btn brush-size" data-size="24" aria-label="Large Brush" aria-pressed="false">
+                    <span class="dot size-lg"></span>
+                </button>
+            </div>
+
+            <div class="toolbar-divider"></div>
+            
+            <div class="tool-group color-palette" role="group" aria-label="Colors">
+                <button class="tool-btn color-btn active" data-color="#E0D8CC" aria-label="Warm Beige" aria-pressed="true" style="background-color: #E0D8CC;"></button>
+                <button class="tool-btn color-btn" data-color="#7B8B9E" aria-label="Muted Blue" aria-pressed="false" style="background-color: #7B8B9E;"></button>
+                <button class="tool-btn color-btn" data-color="#B6B0C6" aria-label="Soft Lavender" aria-pressed="false" style="background-color: #B6B0C6;"></button>
+                <button class="tool-btn color-btn" data-color="#7D8F81" aria-label="Muted Green" aria-pressed="false" style="background-color: #7D8F81;"></button>
+                <button class="tool-btn color-btn" data-color="#C29B93" aria-label="Soft Pink" aria-pressed="false" style="background-color: #C29B93;"></button>
+            </div>
+
+            <div class="toolbar-divider"></div>
+
+            <div class="tool-group" role="group" aria-label="History">
+                <button id="btn-undo" class="tool-btn action-btn" aria-label="Undo" disabled>↶</button>
+                <button id="btn-redo" class="tool-btn action-btn" aria-label="Redo" disabled>↷</button>
+            </div>
+
+            <div class="toolbar-divider"></div>
+
+            <button id="btn-clear" class="tool-btn action-btn clear-btn" aria-label="Clear Canvas">🗑</button>
+            
+        </div>
+
+        <!-- Leave Confirmation Modal -->
+        <div class="completion-modal fade-in hidden" id="leave-modal" aria-live="polite">
+            <h2 class="completion-text">Leave this drawing behind?</h2>
+            <div class="completion-actions">
+                <button class="btn-primary" id="btn-confirm-leave">Leave</button>
+                <button class="btn-secondary" id="btn-cancel-leave">Stay</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/doodle.js"></script>
+</body>
+</html>

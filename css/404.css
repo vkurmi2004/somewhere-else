@@ -1,0 +1,67 @@
+/* =========================================
+   404 ERROR PAGE STYLES
+   ========================================= */
+
+body {
+    background: radial-gradient(circle at 50% 50%, #0B101A 0%, #03050A 100%);
+    overflow: hidden;
+    height: 100vh;
+}
+
+.room-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.message-container {
+    text-align: center;
+    z-index: 10;
+    max-width: 90%;
+}
+
+.error-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: var(--text-main);
+    margin-bottom: var(--space-md);
+    line-height: 1.4;
+    font-weight: 300;
+}
+
+.error-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    letter-spacing: 0.1em;
+}
+
+/* Background Stars */
+.stars-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ambient-star {
+    position: absolute;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    opacity: 0.25;
+    animation: slowTwinkle 4s ease-in-out infinite alternate;
+}
+
+@keyframes slowTwinkle {
+    0% { opacity: 0.1; transform: scale(0.9); }
+    100% { opacity: 0.4; transform: scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ambient-star {
+        animation: none;
+        opacity: 0.25;
+    }
+}

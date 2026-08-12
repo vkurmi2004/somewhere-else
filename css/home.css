@@ -1,0 +1,274 @@
+/* =========================================
+   HOMEPAGE STYLES
+   ========================================= */
+
+/* NAVIGATION */
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-md) var(--space-lg);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.nav-brand {
+    font-family: var(--font-heading);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: var(--space-md);
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+}
+
+.nav-links a:hover {
+    color: var(--text-main);
+}
+
+.mobile-menu-toggle {
+    display: none;
+    color: var(--text-main);
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.hamburger, .hamburger::before, .hamburger::after {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-muted);
+    transition: all var(--transition-fast);
+}
+
+.hamburger::before, .hamburger::after {
+    content: '';
+    position: absolute;
+}
+
+.hamburger::before { transform: translateY(-8px); }
+.hamburger::after { transform: translateY(8px); }
+
+
+/* HERO SECTION */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-lg) var(--space-sm);
+    position: relative;
+}
+
+/* Very subtle animated background gradient to give a "breathing" feel */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at center, rgba(182, 176, 198, 0.03) 0%, transparent 70%);
+    z-index: -1;
+    animation: breathe 8s ease-in-out infinite alternate;
+}
+
+@keyframes breathe {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(1.1); opacity: 1; }
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: 0.15em;
+    margin-bottom: var(--space-xl);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--text-main);
+    margin-bottom: var(--space-sm);
+}
+
+.hero-text {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.hero-note {
+    margin-top: var(--space-lg);
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+}
+
+/* SECTION TITLES */
+.section-title {
+    text-align: center;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    margin-bottom: var(--space-lg);
+    text-transform: uppercase;
+}
+
+/* CATEGORIES SECTION */
+.categories {
+    padding: var(--space-xl) var(--space-md);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.category-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: var(--space-lg) var(--space-md);
+    text-align: center;
+    transition: all var(--transition-slow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.category-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.category-card:hover {
+    transform: translateY(-4px);
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-hover);
+}
+
+.category-card:hover::after {
+    opacity: 1;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-sm);
+    display: block;
+    transition: transform var(--transition-slow);
+}
+
+.category-card:hover .card-icon {
+    transform: scale(1.1) translateY(-4px);
+}
+
+.category-card h3 {
+    font-size: 1.25rem;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-xs);
+}
+
+.category-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* SURPRISE ME CARD */
+.surprise-card {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(182, 176, 198, 0.05) 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    padding: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    transition: all var(--transition-slow);
+}
+
+.surprise-card:hover {
+    background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(182, 176, 198, 0.1) 100%);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+.surprise-card .card-icon {
+    margin-bottom: 0;
+}
+
+/* FIVE MINUTE ESCAPE SECTION */
+.five-min-escape {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.five-min-escape p {
+    color: var(--text-main);
+    font-size: 1.25rem;
+    margin-bottom: var(--space-md);
+    font-family: var(--font-heading);
+}
+
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .main-nav {
+        padding: var(--space-md);
+    }
+    
+    .nav-links {
+        display: none; /* Hide for mobile initially, toggled by JS */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg-primary);
+        padding: var(--space-md);
+        border-bottom: 1px solid var(--border-subtle);
+        text-align: center;
+    }
+    
+    .nav-links.active {
+        display: flex;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        position: relative;
+        z-index: 101;
+    }
+
+    .surprise-card {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-lg) var(--space-md);
+    }
+}

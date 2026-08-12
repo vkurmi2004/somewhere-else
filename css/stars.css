@@ -1,0 +1,173 @@
+/* =========================================
+   STAR ROOM STYLES
+   ========================================= */
+
+body {
+    background: radial-gradient(circle at 50% 50%, #080D1A 0%, #03050A 100%);
+    overflow: hidden;
+    touch-action: none;
+}
+
+.room-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Header Controls */
+.room-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.leave-link {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--transition-fast);
+    opacity: 0.6;
+}
+
+.leave-link:hover {
+    color: var(--text-main);
+    opacity: 1;
+}
+
+.sound-toggle {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    opacity: 0.6;
+    transition: all var(--transition-fast);
+    padding: 0.5rem;
+}
+
+.sound-toggle:hover {
+    color: var(--text-main);
+    opacity: 1;
+}
+
+/* Canvas Background */
+#stars-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Interactive Stars Layer */
+#interactive-stars-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+}
+
+/* Interactive Star Buttons */
+.interactive-star {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.6s ease;
+    outline: none;
+}
+
+/* Outer focus state */
+.interactive-star:focus-visible {
+    outline: 1px solid rgba(255, 255, 255, 0.3);
+    outline-offset: 4px;
+}
+
+/* Actual visual dot representing the star */
+.star-dot {
+    width: 3px;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 50%;
+    transition: all 0.6s ease;
+    box-shadow: 0 0 6px var(--text-main);
+    opacity: 0.6;
+}
+
+/* Glow State when hovered / focused */
+.interactive-star:hover .star-dot,
+.interactive-star:focus-visible .star-dot {
+    background-color: var(--accent-lavender);
+    box-shadow: 0 0 10px var(--accent-lavender), 0 0 20px rgba(182, 176, 198, 0.4);
+    opacity: 1;
+    transform: scale(1.3);
+}
+
+/* Tap Glow Triggered State */
+.interactive-star.glowing .star-dot {
+    background-color: #ffffff;
+    box-shadow: 
+        0 0 15px #ffffff, 
+        0 0 30px var(--accent-lavender),
+        0 0 60px rgba(182, 176, 198, 0.6);
+    opacity: 1;
+    transform: scale(2);
+}
+
+/* Initial Message */
+.initial-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    color: rgba(123, 139, 158, 0.35); /* Subtle tone */
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 3s ease;
+}
+
+.initial-message.fade-out {
+    opacity: 0 !important;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .interactive-star {
+        transition: opacity 0.5s ease;
+    }
+    
+    .interactive-star.glowing .star-dot {
+        animation: none;
+    }
+}
+
+/* Mobile specific styling */
+@media (max-width: 768px) {
+    .room-header {
+        padding: var(--space-md);
+    }
+    
+    /* Increase touch target size on mobile */
+    .interactive-star {
+        width: 44px;
+        height: 44px;
+    }
+}

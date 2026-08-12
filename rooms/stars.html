@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Star Room | Somewhere Else</title>
+    <meta name="description" content="Look up for a while.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/stars.css">
+</head>
+<body>
+    
+    <header class="room-header">
+        <a href="../index.html" class="leave-link" aria-label="Leave Star Room">
+            <span class="arrow">&larr;</span> Leave Room
+        </a>
+        <button id="sound-toggle" class="sound-toggle" aria-label="Toggle Sound" aria-pressed="false">
+            <span class="icon">🔇</span>
+        </button>
+    </header>
+
+    <main class="room-container" id="stars-container">
+        <!-- Canvas for background sky and ambient stars -->
+        <canvas id="stars-canvas" aria-hidden="true"></canvas>
+        
+        <!-- Interactive stars overlay (injected via JS for accessibility) -->
+        <div id="interactive-stars-layer" aria-label="Interactive Stars. Move mouse to react, select to glow."></div>
+
+        <!-- Initial Message -->
+        <div id="initial-message" class="initial-message fade-in">
+            <p>Look up for a while.</p>
+        </div>
+    </main>
+
+    <script src="../js/stars.js"></script>
+</body>
+</html>
