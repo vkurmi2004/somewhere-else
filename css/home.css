@@ -1,274 +1,494 @@
 /* =========================================
-   HOMEPAGE STYLES
+   HOMEPAGE — SOMEWHERE ELSE
+   Premium, ambient, alive
    ========================================= */
 
-/* NAVIGATION */
+/* ---- AMBIENT CANVAS ---- */
+#ambient-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ---- NOISE TEXTURE ---- */
+.noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+}
+
+/* ---- NAVIGATION ---- */
 .main-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-md) var(--space-lg);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 3rem;
+    transition: background var(--transition-normal), backdrop-filter var(--transition-normal);
+}
+
+.main-nav.scrolled {
+    background: rgba(11, 16, 26, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .nav-brand {
     font-family: var(--font-heading);
     font-weight: 300;
-    letter-spacing: 0.1em;
-    font-size: 1.1rem;
-    color: var(--text-muted);
+    letter-spacing: 0.18em;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    transition: color var(--transition-fast);
+    z-index: 101;
 }
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: var(--space-md);
+    gap: 2.5rem;
+    z-index: 101;
 }
 
 .nav-links a {
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.35);
     transition: color var(--transition-fast);
 }
 
 .nav-links a:hover {
-    color: var(--text-main);
+    color: rgba(255,255,255,0.9);
 }
 
 .mobile-menu-toggle {
     display: none;
-    color: var(--text-main);
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
+    z-index: 101;
+    position: relative;
+    width: 28px;
+    height: 20px;
 }
 
-.hamburger, .hamburger::before, .hamburger::after {
+.hamburger,
+.hamburger::before,
+.hamburger::after {
     display: block;
-    width: 24px;
-    height: 2px;
-    background-color: var(--text-muted);
-    transition: all var(--transition-fast);
-}
-
-.hamburger::before, .hamburger::after {
-    content: '';
     position: absolute;
+    width: 24px;
+    height: 1.5px;
+    background-color: rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+    left: 0;
 }
+.hamburger { top: 50%; transform: translateY(-50%); }
+.hamburger::before { content: ''; top: -8px; }
+.hamburger::after  { content: ''; bottom: -8px; top: auto; }
 
-.hamburger::before { transform: translateY(-8px); }
-.hamburger::after { transform: translateY(8px); }
-
-
-/* HERO SECTION */
+/* ---- HERO ---- */
 .hero {
+    position: relative;
+    z-index: 2;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: var(--space-lg) var(--space-sm);
-    position: relative;
+    padding: 8rem 2rem 4rem;
 }
 
-/* Very subtle animated background gradient to give a "breathing" feel */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(circle at center, rgba(182, 176, 198, 0.03) 0%, transparent 70%);
-    z-index: -1;
-    animation: breathe 8s ease-in-out infinite alternate;
-}
-
-@keyframes breathe {
-    0% { transform: scale(1); opacity: 0.5; }
-    100% { transform: scale(1.1); opacity: 1; }
-}
-
-.hero-title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    letter-spacing: 0.15em;
-    margin-bottom: var(--space-xl);
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.hero-subtitle {
-    font-family: var(--font-heading);
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    color: var(--text-main);
-    margin-bottom: var(--space-sm);
-}
-
-.hero-text {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
-    color: var(--text-muted);
-    margin-bottom: var(--space-lg);
-}
-
-.hero-note {
-    margin-top: var(--space-lg);
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    opacity: 0.7;
-}
-
-/* SECTION TITLES */
-.section-title {
-    text-align: center;
-    font-size: 1.1rem;
-    letter-spacing: 0.2em;
-    color: var(--text-muted);
-    margin-bottom: var(--space-lg);
-    text-transform: uppercase;
-}
-
-/* CATEGORIES SECTION */
-.categories {
-    padding: var(--space-xl) var(--space-md);
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-md);
-    margin-bottom: var(--space-lg);
-}
-
-.category-card {
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: var(--space-lg) var(--space-md);
-    text-align: center;
-    transition: all var(--transition-slow);
+.hero-inner {
+    max-width: 680px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    overflow: hidden;
+    gap: 0;
 }
 
-.category-card::after {
-    content: '';
+.hero-eyebrow {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 0.2s;
+}
+
+.hero-title {
+    font-family: var(--font-heading);
+    font-weight: 200;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 0.4s;
+}
+
+.hero-title-accent {
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(182,176,220,0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: 300;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.75;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 0.6s;
+}
+
+.hero-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 0.8s;
+}
+
+/* PRIMARY CTA */
+.btn-enter {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.1rem 2.8rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    color: rgba(255,255,255,0.9);
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.btn-enter:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(182,176,220,0.08);
+}
+
+.btn-enter-glow {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent);
+    background: radial-gradient(circle at 50% 50%, rgba(182,176,220,0.15), transparent 70%);
     opacity: 0;
-    transition: opacity var(--transition-normal);
+    transition: opacity 0.4s ease;
+    pointer-events: none;
 }
 
-.category-card:hover {
-    transform: translateY(-4px);
-    background-color: var(--bg-tertiary);
-    border-color: var(--border-hover);
-}
-
-.category-card:hover::after {
+.btn-enter:hover .btn-enter-glow {
     opacity: 1;
 }
 
-.card-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-sm);
-    display: block;
-    transition: transform var(--transition-slow);
+/* SURPRISE BUTTON */
+.btn-surprise {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0.25rem 0.5rem;
 }
 
-.category-card:hover .card-icon {
-    transform: scale(1.1) translateY(-4px);
+.btn-surprise:hover {
+    color: rgba(255,255,255,0.7);
 }
 
-.category-card h3 {
-    font-size: 1.25rem;
-    letter-spacing: 0.1em;
-    margin-bottom: var(--space-xs);
+.hero-note {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.15);
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 1s;
 }
 
-.category-card p {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-}
-
-/* SURPRISE ME CARD */
-.surprise-card {
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(182, 176, 198, 0.05) 100%);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: var(--space-md);
+/* SCROLL HINT */
+.hero-scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: var(--space-md);
-    transition: all var(--transition-slow);
+    opacity: 0;
+    animation: heroFade 1.2s ease forwards 1.4s;
 }
 
-.surprise-card:hover {
-    background: linear-gradient(135deg, var(--bg-tertiary) 0%, rgba(182, 176, 198, 0.1) 100%);
-    border-color: var(--border-hover);
-    transform: translateY(-2px);
+.scroll-line {
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
 }
 
-.surprise-card .card-icon {
-    margin-bottom: 0;
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50%       { opacity: 0.8; transform: scaleY(1.1); }
 }
 
-/* FIVE MINUTE ESCAPE SECTION */
-.five-min-escape {
+@keyframes heroFade {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- ROOMS SECTION ---- */
+.rooms-section {
+    position: relative;
+    z-index: 2;
+    padding: 6rem 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.section-label {
     text-align: center;
-    padding: var(--space-xl) var(--space-md);
-    background-color: var(--bg-secondary);
-    border-top: 1px solid var(--border-subtle);
+    font-family: var(--font-heading);
+    font-size: 0.72rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 3.5rem;
 }
 
-.five-min-escape p {
-    color: var(--text-main);
-    font-size: 1.25rem;
-    margin-bottom: var(--space-md);
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+/* ROOM CARD */
+.room-card {
+    position: relative;
+    display: block;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
+                border-color 0.4s ease,
+                background 0.4s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.room-card:hover {
+    transform: translateY(-6px);
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.14);
+}
+
+/* Per-card glow color from data-color attribute */
+.room-card-glow {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.room-card:hover .room-card-glow {
+    opacity: 1;
+}
+
+#room-bubbles .room-card-glow  { background: radial-gradient(ellipse at top left, rgba(176,210,255,0.08), transparent 65%); }
+#room-rain    .room-card-glow  { background: radial-gradient(ellipse at top left, rgba(147,197,253,0.08), transparent 65%); }
+#room-doodle  .room-card-glow  { background: radial-gradient(ellipse at top left, rgba(196,181,253,0.08), transparent 65%); }
+#room-stars   .room-card-glow  { background: radial-gradient(ellipse at top left, rgba(253,230,138,0.07), transparent 65%); }
+
+.room-card-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    padding: 2rem 1.75rem;
+    position: relative;
+    z-index: 1;
+}
+
+.room-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    display: block;
+}
+
+.room-card:hover .room-icon {
+    transform: scale(1.15) translateY(-2px);
+}
+
+.room-text {
+    flex: 1;
+}
+
+.room-name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.01em;
+}
+
+.room-mood {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.22);
+    margin-bottom: 0.6rem;
     font-family: var(--font-heading);
 }
 
+.room-desc {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.35);
+    font-weight: 300;
+}
 
-/* RESPONSIVE DESIGN */
+.room-card:hover .room-desc {
+    color: rgba(255,255,255,0.5);
+}
+
+.room-arrow {
+    color: rgba(255,255,255,0.15);
+    font-size: 1.1rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+    transition: transform 0.4s ease, color 0.4s ease;
+}
+
+.room-card:hover .room-arrow {
+    transform: translateX(4px);
+    color: rgba(255,255,255,0.5);
+}
+
+/* Featured card (Star Room) — full width */
+.room-card--featured {
+    grid-column: 1 / -1;
+}
+
+.room-card--featured .room-card-inner {
+    padding: 2.25rem 2rem;
+}
+
+.room-card--featured .room-name {
+    font-size: 1.3rem;
+}
+
+/* ---- FOOTER ---- */
+.site-footer {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 4rem 2rem 5rem;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+
+.footer-text {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.2);
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+}
+
+.footer-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.1);
+}
+
+/* ---- RESPONSIVE ---- */
 @media (max-width: 768px) {
     .main-nav {
-        padding: var(--space-md);
+        padding: 1.5rem 1.5rem;
     }
-    
+
     .nav-links {
-        display: none; /* Hide for mobile initially, toggled by JS */
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(11,16,26,0.97);
         flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: var(--bg-primary);
-        padding: var(--space-md);
-        border-bottom: 1px solid var(--border-subtle);
-        text-align: center;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        backdrop-filter: blur(20px);
     }
-    
+
     .nav-links.active {
         display: flex;
     }
 
-    .mobile-menu-toggle {
-        display: block;
-        position: relative;
-        z-index: 101;
+    .nav-links a {
+        font-size: 1.3rem;
+        letter-spacing: 0.1em;
+        color: rgba(255,255,255,0.6);
     }
 
-    .surprise-card {
-        flex-direction: column;
-        text-align: center;
-        padding: var(--space-lg) var(--space-md);
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    .hero-title {
+        font-size: clamp(3rem, 14vw, 5rem);
+    }
+
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .room-card--featured {
+        grid-column: 1;
+    }
+
+    .rooms-section {
+        padding: 4rem 1.25rem 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 7rem 1.25rem 3rem;
+    }
+
+    .room-card-inner {
+        padding: 1.5rem 1.25rem;
     }
 }
