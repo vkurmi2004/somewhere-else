@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
-        // Optimize for high DPI displays by scaling canvas
         const dpr = window.devicePixelRatio || 1;
         canvas.width = width * dpr;
         canvas.height = height * dpr;
@@ -47,15 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createDrop() {
-        const layer = Math.floor(Math.random() * LAYERS); // 0 (bg), 1 (mid), 2 (fg)
+        const layer = Math.floor(Math.random() * LAYERS);
         
-        // Slower drops for background, faster for foreground
-        let speedY = Math.random() * 2 + 1; // base
+        let speedY = Math.random() * 2 + 1;
         if (layer === 1) speedY += 2;
         if (layer === 2) speedY += 4;
         
         if (prefersReducedMotion) {
-            speedY *= 0.2; // Significantly slower
+            speedY *= 0.2;
         }
 
         const length = Math.random() * (layer * 5 + 5) + 5;
@@ -63,20 +61,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
         return {
             x: Math.random() * width,
-            y: Math.random() * height - height, // Start above screen
+            y: Math.random() * height - height,
             length: length,
             speedY: speedY,
-            speedX: (Math.random() - 0.5) * 0.5, // Slight wind
+            speedX: (Math.random() - 0.5) * 0.5,
             opacity: opacity,
             thickness: layer * 0.5 + 0.5
         };
     }
 
     function draw() {
-        // Clear canvas
         ctx.clearRect(0, 0, width, height);
-        
-        // Draw drops
         ctx.lineCap = 'round';
         
         for (let i = 0; i < drops.length; i++) {
@@ -86,16 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.moveTo(drop.x, drop.y);
             ctx.lineTo(drop.x + drop.speedX * 2, drop.y + drop.length);
             
-            // Soft blueish-white color
             ctx.strokeStyle = `rgba(168, 185, 204, ${drop.opacity})`;
             ctx.lineWidth = drop.thickness;
             ctx.stroke();
             
-            // Update position
             drop.y += drop.speedY;
             drop.x += drop.speedX;
             
-            // Reset if out of bounds
             if (drop.y > height) {
                 drop.y = -drop.length;
                 drop.x = Math.random() * width;
@@ -107,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', () => {
         resize();
-        // Distribute drops instantly across new dimensions
         drops.forEach(drop => drop.x = Math.random() * width);
     });
 
@@ -116,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     draw();
 
     /* =========================================
-       AUDIO SYNTHESIS (No external files)
+       AUDIO SYNTHESIS (Gentle, Soft Ambient Rain)
        ========================================= */
     let audioCtx = null;
     let rainGainNode = null;
@@ -124,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let isAudioInitialized = false;
     let isThunderEnabled = false;
-    let volumeLevel = parseInt(volumeControl.value) / 100; // 0.0 to 1.0
+    let volumeLevel = parseInt(volumeControl.value) / 100;
     let nextThunderTime = 0;
 
     function initAudio() {
@@ -132,35 +123,40 @@ document.addEventListener('DOMContentLoaded', () => {
         
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         masterGainNode = audioCtx.createGain();
-        masterGainNode.gain.value = volumeLevel;
+        masterGainNode.gain.value = volumeLevel * 0.15; // Very soft base volume
         masterGainNode.connect(audioCtx.destination);
         
-        // Rain Synth (Filtered White Noise)
-        const bufferSize = audioCtx.sampleRate * 2; // 2 seconds of noise
+        // Soft Rain Synth (Deep Filtered Pink/White Noise)
+        const bufferSize = audioCtx.sampleRate * 2;
         const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
         const output = buffer.getChannelData(0);
         
+        let b0 = 0, b1 = 0, b2 = 0;
         for (let i = 0; i < bufferSize; i++) {
-            output[i] = Math.random() * 2 - 1; // White noise
+            const white = Math.random() * 2 - 1;
+            b0 = 0.99 * b0 + white * 0.05;
+            b1 = 0.96 * b1 + white * 0.1;
+            b2 = 0.90 * b2 + white * 0.15;
+            output[i] = (b0 + b1 + b2) * 0.3; // Soft pink noise
         }
         
-        const whiteNoise = audioCtx.createBufferSource();
-        whiteNoise.buffer = buffer;
-        whiteNoise.loop = true;
+        const noiseSource = audioCtx.createBufferSource();
+        noiseSource.buffer = buffer;
+        noiseSource.loop = true;
         
-        // Filter to make it sound like rain (lowpass/bandpass)
+        // Lowpass filter to keep it warm, deep and non-harsh (350Hz max)
         const rainFilter = audioCtx.createBiquadFilter();
         rainFilter.type = 'lowpass';
-        rainFilter.frequency.value = 1000;
+        rainFilter.frequency.value = 350;
         
         rainGainNode = audioCtx.createGain();
-        rainGainNode.gain.value = 0.5; // Base rain volume
+        rainGainNode.gain.value = 0.08; // Gentle background level
         
-        whiteNoise.connect(rainFilter);
+        noiseSource.connect(rainFilter);
         rainFilter.connect(rainGainNode);
         rainGainNode.connect(masterGainNode);
         
-        whiteNoise.start(0);
+        noiseSource.start(0);
         
         isAudioInitialized = true;
         scheduleThunder();
@@ -168,9 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function scheduleThunder() {
         if (!isAudioInitialized) return;
-        
-        // Random interval between 15 and 45 seconds
-        const delay = (Math.random() * 30 + 15) * 1000;
+        const delay = (Math.random() * 35 + 20) * 1000;
         
         setTimeout(() => {
             if (isThunderEnabled && !prefersReducedMotion) {
@@ -181,62 +175,67 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function playThunder() {
+        if (!audioCtx) return;
         if (audioCtx.state === 'suspended') audioCtx.resume();
         
-        // Visual flash (subtle)
+        // Gentle visual flash
         document.body.classList.add('flash');
-        setTimeout(() => document.body.classList.remove('flash'), 400);
+        setTimeout(() => document.body.classList.remove('flash'), 300);
 
-        // Audio Synth
+        // Soft, deep sine-wave low rumble (no harsh square waves)
         const osc = audioCtx.createOscillator();
         const rumbleFilter = audioCtx.createBiquadFilter();
         const rumbleGain = audioCtx.createGain();
 
-        osc.type = 'square'; // Harsh wave
-        osc.frequency.setValueAtTime(40, audioCtx.currentTime); // Low freq rumble
-        osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + 3);
+        osc.type = 'sine'; // Warm sine wave
+        osc.frequency.setValueAtTime(35, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(15, audioCtx.currentTime + 4);
 
         rumbleFilter.type = 'lowpass';
-        rumbleFilter.frequency.setValueAtTime(200, audioCtx.currentTime);
+        rumbleFilter.frequency.setValueAtTime(90, audioCtx.currentTime);
 
         rumbleGain.gain.setValueAtTime(0, audioCtx.currentTime);
-        // Soft attack
-        rumbleGain.gain.linearRampToValueAtTime(0.8, audioCtx.currentTime + 0.5);
-        // Long decay
-        rumbleGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 4);
+        rumbleGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 1.0); // Gentle attack
+        rumbleGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 4.5); // Long smooth decay
 
         osc.connect(rumbleFilter);
         rumbleFilter.connect(rumbleGain);
         rumbleGain.connect(masterGainNode);
 
         osc.start(audioCtx.currentTime);
-        osc.stop(audioCtx.currentTime + 4);
+        osc.stop(audioCtx.currentTime + 4.5);
     }
 
     /* =========================================
        UI INTERACTIONS
        ========================================= */
 
-    // Fade out initial message after 3 seconds
     setTimeout(() => {
-        initialMessage.classList.remove('fade-in');
-        initialMessage.classList.add('fade-out');
+        if (initialMessage) {
+            initialMessage.classList.remove('fade-in');
+            initialMessage.classList.add('fade-out');
+        }
     }, 3000);
 
-    // Toggle Settings Panel
+    // Toggle Settings Panel & Audio Init
     settingsToggle.addEventListener('click', () => {
         const isExpanded = settingsToggle.getAttribute('aria-expanded') === 'true';
         settingsToggle.setAttribute('aria-expanded', !isExpanded);
         settingsPanel.classList.toggle('hidden');
         
-        // Init audio on first interaction if not yet started
         if (!isExpanded) {
             initAudio();
             if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         }
     });
 
-    // Close panel when clicking outside
+    // Global click listener to resume AudioContext on user touch/click
+    document.addEventListener('click', () => {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }, { once: true });
+
     document.addEventListener('click', (e) => {
         if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
             settingsPanel.classList.add('hidden');
@@ -247,10 +246,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Volume Control
     volumeControl.addEventListener('input', (e) => {
         volumeLevel = parseInt(e.target.value) / 100;
-        if (masterGainNode) {
-            masterGainNode.gain.setValueAtTime(volumeLevel, audioCtx.currentTime);
+        if (masterGainNode && audioCtx) {
+            masterGainNode.gain.setValueAtTime(volumeLevel * 0.15, audioCtx.currentTime);
         }
-        initAudio(); // Init if hasn't been initialized
+        initAudio();
     });
 
     // Thunder Toggle
@@ -268,11 +267,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     timerBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update UI
             timerBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            // Clear existing
             if (timerId) {
                 clearTimeout(timerId);
                 timerId = null;
@@ -284,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 timerId = setTimeout(completeSession, ms);
             }
             
-            // If they are resuming an infinite session after it completed
             if (roomContainer.classList.contains('fade-dim')) {
                 resetSession();
             }
@@ -294,22 +290,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function completeSession() {
         roomContainer.classList.add('fade-dim');
         completionModal.classList.remove('hidden');
-        // Fade out audio slightly
-        if (masterGainNode) {
-            masterGainNode.gain.linearRampToValueAtTime(0.1, audioCtx.currentTime + 2);
+        if (masterGainNode && audioCtx) {
+            masterGainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 2);
         }
     }
 
     function resetSession() {
         roomContainer.classList.remove('fade-dim');
         completionModal.classList.add('hidden');
-        if (masterGainNode) {
-            masterGainNode.gain.linearRampToValueAtTime(volumeLevel, audioCtx.currentTime + 1);
+        if (masterGainNode && audioCtx) {
+            masterGainNode.gain.linearRampToValueAtTime(volumeLevel * 0.15, audioCtx.currentTime + 1);
         }
     }
 
     btnStay.addEventListener('click', () => {
-        // Change to infinite and reset
         timerBtns.forEach(b => b.classList.remove('active'));
         document.querySelector('.timer-btn[data-time="infinity"]').classList.add('active');
         resetSession();
