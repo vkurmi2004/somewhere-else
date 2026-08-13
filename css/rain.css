@@ -1,9 +1,9 @@
 /* =========================================
-   RAIN ROOM STYLES
+   RAIN ROOM STYLES - ATMOSPHERIC OVERHAUL
    ========================================= */
 
 body {
-    background-color: #030509; /* Deeper than global for darker room */
+    background: #020408;
     overflow: hidden;
     touch-action: none;
 }
@@ -16,12 +16,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(circle at 50% 40%, #0A111F 0%, #020305 100%);
-    transition: opacity 2s ease; /* For timer fade */
+    background: 
+        radial-gradient(ellipse at 50% 110%, rgba(255, 140, 30, 0.06) 0%, transparent 55%),
+        radial-gradient(ellipse at 20% 90%, rgba(30, 90, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 80%, rgba(180, 30, 80, 0.04) 0%, transparent 35%),
+        linear-gradient(to bottom, #02060f 0%, #050c1a 50%, #03070e 100%);
+    transition: opacity 2s ease;
 }
 
 .room-container.fade-dim {
-    opacity: 0.3;
+    opacity: 0.25;
 }
 
 /* Header & Controls */
@@ -30,7 +34,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    padding: var(--space-md) var(--space-lg);
+    padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -38,25 +42,23 @@ body {
 }
 
 .leave-link {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 0.95rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: color var(--transition-fast);
-    opacity: 0.5;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .leave-link:hover {
-    color: var(--text-main);
+    color: #ffffff;
     opacity: 1;
 }
 
 .settings-toggle {
-    color: var(--text-muted);
-    font-size: 1.5rem;
-    opacity: 0.5;
-    transition: all var(--transition-fast);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.4rem;
+    transition: all 0.2s ease;
     padding: 0.5rem;
     width: 44px;
     height: 44px;
@@ -64,38 +66,41 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.settings-toggle:hover, .settings-toggle[aria-expanded="true"] {
-    color: var(--text-main);
-    opacity: 1;
-    background: rgba(255, 255, 255, 0.05);
+.settings-toggle:hover,
+.settings-toggle[aria-expanded="true"] {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 12px rgba(100, 160, 255, 0.25);
 }
 
 /* Settings Panel */
 .settings-panel {
     position: absolute;
-    top: calc(var(--space-md) + 44px + 10px);
-    right: var(--space-lg);
-    background: rgba(11, 16, 26, 0.8);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--border-subtle);
+    top: calc(1.5rem + 54px);
+    right: 2rem;
+    background: rgba(5, 10, 20, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
-    padding: var(--space-md);
+    padding: 1.5rem;
     width: 280px;
     z-index: 99;
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
+    gap: 1.25rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .settings-panel.hidden {
     opacity: 0;
     pointer-events: none;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
 }
 
 .setting-group {
@@ -104,15 +109,15 @@ body {
     gap: 0.5rem;
 }
 
-.setting-group label, .label-text {
-    font-family: var(--font-heading);
-    color: var(--text-muted);
-    font-size: 0.85rem;
+.setting-group label,
+.label-text {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
 }
 
-/* Form Controls */
+/* Range input */
 input[type="range"] {
     -webkit-appearance: none;
     width: 100%;
@@ -124,34 +129,35 @@ input[type="range"]::-webkit-slider-thumb {
     height: 16px;
     width: 16px;
     border-radius: 50%;
-    background: var(--text-main);
+    background: #ffffff;
     cursor: pointer;
     margin-top: -6px;
+    box-shadow: 0 0 8px rgba(100, 160, 255, 0.5);
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 2px;
 }
 
 .btn-toggle {
     background: transparent;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    transition: all var(--transition-fast);
+    transition: all 0.2s ease;
     font-size: 0.9rem;
     align-self: flex-start;
 }
 
 .btn-toggle[aria-pressed="true"] {
-    background: var(--text-main);
-    color: var(--bg-primary);
-    border-color: var(--text-main);
+    background: rgba(100, 160, 255, 0.2);
+    color: #fff;
+    border-color: rgba(100, 160, 255, 0.5);
 }
 
 .timer-options {
@@ -162,21 +168,21 @@ input[type="range"]::-webkit-slider-runnable-track {
 .timer-btn {
     flex: 1;
     background: transparent;
-    border: 1px solid var(--border-subtle);
-    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.5);
     padding: 0.5rem 0;
     border-radius: 8px;
-    transition: all var(--transition-fast);
-    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
 }
 
 .timer-btn.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-main);
-    border-color: var(--border-hover);
+    background: rgba(100, 160, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(100, 160, 255, 0.4);
 }
 
-/* Canvas & Window Overlay */
+/* Rain Canvas */
 #rain-canvas {
     position: absolute;
     inset: 0;
@@ -184,65 +190,85 @@ input[type="range"]::-webkit-slider-runnable-track {
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.5; /* Keeps the rain from being too sharp */
-    filter: blur(1px);
 }
 
-/* Screen overlay simulating a glass pane */
+/* Glass Pane Overlay */
 .window-overlay {
     position: absolute;
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    /* Subtle vignette and glass color shift */
-    box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
-    background: radial-gradient(circle at center, transparent 0%, rgba(3, 5, 9, 0.4) 100%);
-    backdrop-filter: blur(1px); /* Slight blur on the rain */
-    -webkit-backdrop-filter: blur(1px);
+    background: 
+        /* Cold blue-grey glass tint */
+        linear-gradient(135deg, rgba(100, 130, 180, 0.04) 0%, rgba(60, 80, 120, 0.06) 100%);
+    box-shadow: 
+        inset 0 0 200px rgba(0, 0, 0, 0.8),
+        inset 0 0 80px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0.5px);
+    -webkit-backdrop-filter: blur(0.5px);
 }
 
-/* Condensation texture */
+/* Condensation / fog texture on glass */
 .condensation {
     position: absolute;
     inset: 0;
-    background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-    opacity: 0.4;
-    mix-blend-mode: overlay;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: screen;
+    background: radial-gradient(
+        ellipse at 40% 60%,
+        rgba(150, 170, 200, 0.04) 0%,
+        transparent 60%
+    );
 }
 
-/* City Lights Glow */
+/* City Lights (amber/neon glow at bottom) */
 .city-lights {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 40%;
-    background: linear-gradient(to top, rgba(255, 180, 110, 0.08) 0%, transparent 100%);
+    height: 45%;
     z-index: 1;
+    pointer-events: none;
+    background: 
+        linear-gradient(to top, 
+            rgba(255, 140, 30, 0.10) 0%,
+            rgba(180, 60, 120, 0.05) 20%,
+            rgba(30, 80, 200, 0.04) 35%,
+            transparent 60%
+        );
 }
 
-/* Window Frame */
+/* Window Frame Cross */
 .window-frame {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 4;
     pointer-events: none;
-    /* Simulate a cross frame: horizontal and vertical dividers */
     background: 
-        linear-gradient(to right, transparent calc(50% - 6px), #020305 calc(50% - 6px), #020305 calc(50% + 6px), transparent calc(50% + 6px)),
-        linear-gradient(to bottom, transparent 65%, #020305 65%, #020305 calc(65% + 12px), transparent calc(65% + 12px));
-    opacity: 0.9;
-    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+        linear-gradient(to right, 
+            transparent calc(50% - 5px), 
+            rgba(2, 4, 8, 0.95) calc(50% - 5px), 
+            rgba(2, 4, 8, 0.95) calc(50% + 5px), 
+            transparent calc(50% + 5px)),
+        linear-gradient(to bottom, 
+            transparent 63%, 
+            rgba(2, 4, 8, 0.95) 63%, 
+            rgba(2, 4, 8, 0.95) calc(63% + 10px), 
+            transparent calc(63% + 10px));
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.9);
 }
 
 /* Messages */
 .initial-message {
     position: absolute;
     z-index: 10;
-    color: rgba(123, 139, 158, 0.5); /* Extremely subtle, blends with the dark room */
+    color: rgba(120, 145, 175, 0.45);
     font-family: var(--font-heading);
     font-size: 1rem;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.18em;
     pointer-events: none;
     transition: opacity 3s ease;
 }
@@ -255,8 +281,13 @@ input[type="range"]::-webkit-slider-runnable-track {
     position: relative;
     z-index: 10;
     text-align: center;
-    background: transparent;
-    padding: var(--space-xl) var(--space-lg);
+    padding: 2rem 1.5rem;
+    background: rgba(5, 10, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 .completion-modal.hidden {
@@ -264,15 +295,16 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 .completion-text {
-    font-size: clamp(2rem, 4vw, 2.5rem);
-    color: var(--text-main);
-    margin-bottom: var(--space-xl);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: #ffffff;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
 }
 
 .completion-actions {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: 1rem;
     align-items: center;
 }
 
@@ -282,36 +314,33 @@ input[type="range"]::-webkit-slider-runnable-track {
     }
 }
 
-/* Lightning flash effect */
+/* Lightning Flash */
 body.flash {
-    animation: lightningFlash 0.4s ease-out;
+    animation: lightningFlash 0.5s ease-out;
 }
 
 @keyframes lightningFlash {
-    0% { background-color: #030509; }
-    10% { background-color: rgba(182, 176, 198, 0.2); }
-    20% { background-color: #030509; }
-    30% { background-color: rgba(182, 176, 198, 0.1); }
-    100% { background-color: #030509; }
+    0%   { background-color: #020408; }
+    8%   { background-color: rgba(200, 220, 255, 0.12); }
+    18%  { background-color: #020408; }
+    28%  { background-color: rgba(200, 220, 255, 0.06); }
+    100% { background-color: #020408; }
 }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-    body.flash {
-        animation: none !important;
-    }
+    body.flash { animation: none !important; }
 }
 
-/* Mobile specific */
+/* Mobile */
 @media (max-width: 768px) {
     .room-header {
-        padding: var(--space-md);
+        padding: 1rem;
     }
-    
+
     .settings-panel {
-        top: calc(var(--space-md) + 44px);
-        right: var(--space-md);
-        left: var(--space-md);
+        top: calc(1rem + 54px);
+        right: 1rem;
+        left: 1rem;
         width: auto;
     }
 }

@@ -1,12 +1,11 @@
 /* =========================================
-   BUBBLE ROOM STYLES
+   BUBBLE ROOM STYLES - VIVID & REALISTIC
    ========================================= */
 
 body {
-    /* Deep midnight blue with subtle underwater gradient */
-    background: radial-gradient(circle at 50% 100%, #152238 0%, #080C16 100%);
+    background: radial-gradient(ellipse at 50% 100%, #0d1b2a 0%, #040814 60%, #020409 100%);
     overflow: hidden;
-    touch-action: none; /* Prevent accidental scrolling on mobile */
+    touch-action: none;
 }
 
 /* Header & Controls */
@@ -15,7 +14,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    padding: var(--space-md) var(--space-lg);
+    padding: 1.5rem 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,31 +22,33 @@ body {
 }
 
 .leave-link {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.95rem;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: color var(--transition-fast);
-    opacity: 0.7;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .leave-link:hover {
-    color: var(--text-main);
+    color: #ffffff;
     opacity: 1;
 }
 
 .sound-toggle {
-    color: var(--text-muted);
-    font-size: 1.25rem;
-    opacity: 0.7;
-    transition: all var(--transition-fast);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.35rem;
+    transition: all 0.2s ease;
     padding: 0.5rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sound-toggle:hover {
-    color: var(--text-main);
-    opacity: 1;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
 }
 
 /* Bubble Container */
@@ -60,47 +61,67 @@ body {
     align-items: center;
 }
 
-/* Bubbles */
+/* Vivid Glass Bubbles */
 .bubble {
     position: absolute;
     border-radius: 50%;
-    /* Soft gradients, translucent */
-    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(182, 176, 198, 0.02) 60%, rgba(123, 139, 158, 0.1) 100%);
-    box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05), 
-                inset 10px 0 40px rgba(182, 176, 198, 0.1),
-                0 0 10px rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(
+        circle at 35% 35%,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(56, 189, 248, 0.25) 30%,
+        rgba(167, 139, 250, 0.15) 70%,
+        rgba(14, 165, 233, 0.3) 100%
+    );
+    box-shadow: 
+        inset -8px -8px 25px rgba(14, 165, 233, 0.4),
+        inset 8px 8px 15px rgba(255, 255, 255, 0.6),
+        0 8px 32px rgba(14, 165, 233, 0.25),
+        0 0 20px rgba(167, 139, 250, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
     cursor: pointer;
     transform-origin: center;
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     
-    /* Animation driven by JS vars */
     animation: float var(--float-duration, 15s) ease-in-out infinite alternate, 
                drift var(--drift-duration, 10s) ease-in-out infinite alternate;
 }
 
-/* Focus state for accessibility */
-.bubble:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.5);
-    outline-offset: 2px;
+.bubble::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    width: 25%;
+    height: 18%;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    filter: blur(1px);
+}
+
+.bubble:hover {
+    transform: scale(1.08) !important;
+    box-shadow: 
+        inset -8px -8px 25px rgba(14, 165, 233, 0.6),
+        inset 8px 8px 20px rgba(255, 255, 255, 0.8),
+        0 12px 40px rgba(56, 189, 248, 0.4),
+        0 0 30px rgba(167, 139, 250, 0.3);
 }
 
 .bubble.popped {
     opacity: 0 !important;
-    transform: scale(1.5) !important;
+    transform: scale(1.6) !important;
     pointer-events: none;
+    transition: all 0.2s ease-out;
 }
 
-/* Subtle particle effect background (optional, CSS only) */
+/* Background water caustics effect */
 .room-container::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.3;
+    background: radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.08), transparent 70%);
     pointer-events: none;
 }
 
@@ -109,13 +130,13 @@ body {
     position: relative;
     z-index: 10;
     text-align: center;
-    background: rgba(11, 16, 26, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: var(--space-xl) var(--space-lg);
+    background: rgba(8, 12, 22, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 3rem 2.5rem;
     border-radius: 24px;
-    border: 1px solid var(--border-subtle);
-    max-width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 .completion-modal.hidden {
@@ -124,30 +145,17 @@ body {
 
 .completion-text {
     font-size: clamp(2rem, 5vw, 3rem);
-    color: var(--text-main);
-    margin-bottom: var(--space-xs);
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
 }
 
 .completion-subtext {
     font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: var(--space-lg);
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
 }
 
-.completion-actions {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-md);
-    align-items: center;
-}
-
-@media (min-width: 600px) {
-    .completion-actions {
-        flex-direction: row;
-    }
-}
-
-/* Animations */
 @keyframes float {
     0% { transform: translateY(0) scale(1); }
     100% { transform: translateY(var(--float-y, -100px)) scale(1.05); }
@@ -156,24 +164,4 @@ body {
 @keyframes drift {
     0% { margin-left: 0; }
     100% { margin-left: var(--drift-x, 50px); }
-}
-
-/* Accessibility: Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-    .bubble {
-        animation: none;
-        /* Keep them stationary but floating slightly */
-        transition: opacity 0.5s ease, transform 0.3s ease;
-    }
-    
-    .bubble:hover, .bubble:focus-visible {
-        transform: scale(1.05);
-    }
-}
-
-/* Mobile specific */
-@media (max-width: 768px) {
-    .room-header {
-        padding: var(--space-md);
-    }
 }
