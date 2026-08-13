@@ -28,9 +28,48 @@ body {
     width: 100%;
     padding: 1.5rem 2rem;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     z-index: 100;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Active mode badges */
+.mode-badge {
+    display: none;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.glow-badge {
+    color: #d4a8ff;
+    background: rgba(180, 100, 255, 0.12);
+    border-color: rgba(180, 100, 255, 0.3);
+    box-shadow: 0 0 10px rgba(180, 100, 255, 0.2);
+}
+
+/* Floating cursor ring preview */
+.cursor-ring {
+    position: fixed;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    display: none;
+    mix-blend-mode: difference;
+    transition: width 0.12s ease, height 0.12s ease;
 }
 
 .leave-link {
@@ -133,6 +172,7 @@ body {
     color: rgba(255, 255, 255, 0.55);
     transition: all 0.18s ease;
     border: 1px solid transparent;
+    font-size: 1rem;
 }
 
 .tool-btn:hover {
@@ -145,6 +185,22 @@ body {
     background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.2);
     box-shadow: 0 0 12px rgba(150, 180, 255, 0.15);
+}
+
+/* Glow mode active — purple tint */
+#toggle-glow.active {
+    color: #d4a8ff;
+    background: rgba(180, 100, 255, 0.15);
+    border-color: rgba(180, 100, 255, 0.4);
+    box-shadow: 0 0 14px rgba(180, 100, 255, 0.35);
+}
+
+/* Mirror mode active — cyan tint */
+#toggle-mirror.active {
+    color: #7ee8f8;
+    background: rgba(80, 200, 240, 0.12);
+    border-color: rgba(80, 200, 240, 0.35);
+    box-shadow: 0 0 12px rgba(80, 200, 240, 0.25);
 }
 
 .tool-btn:disabled {

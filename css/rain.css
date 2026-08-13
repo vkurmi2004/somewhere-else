@@ -1,5 +1,15 @@
 /* =========================================
    RAIN ROOM STYLES - ATMOSPHERIC OVERHAUL
+   =========================================
+
+   Sections:
+   1. Body & Container
+   2. Header & Settings
+   3. Moon
+   4. Canvas & Overlays
+   5. Messages & Modals
+   6. Animations
+   7. Media Queries
    ========================================= */
 
 body {
@@ -180,6 +190,80 @@ input[type="range"]::-webkit-slider-runnable-track {
     background: rgba(100, 160, 255, 0.15);
     color: #ffffff;
     border-color: rgba(100, 160, 255, 0.4);
+}
+
+/* =========================================
+   MOON
+   ========================================= */
+.moon-container {
+    position: absolute;
+    top: 7%;
+    right: 12%;
+    z-index: 1;
+    pointer-events: none;
+    animation: moonDrift 40s ease-in-out infinite alternate;
+}
+
+.moon-img {
+    width: clamp(90px, 12vw, 160px);
+    height: clamp(90px, 12vw, 160px);
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.88;
+    /* Blur to mimic atmospheric diffusion through glass */
+    filter: blur(0.6px) brightness(0.95);
+    box-shadow: 0 0 40px rgba(200, 220, 255, 0.25);
+}
+
+.moon-halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: radial-gradient(
+        circle,
+        rgba(200, 220, 255, 0.08) 0%,
+        rgba(160, 190, 255, 0.04) 40%,
+        transparent 70%
+    );
+    pointer-events: none;
+}
+
+@keyframes moonDrift {
+    0%   { transform: translateY(0px) translateX(0px); }
+    33%  { transform: translateY(-6px) translateX(3px); }
+    66%  { transform: translateY(4px) translateX(-4px); }
+    100% { transform: translateY(-3px) translateX(2px); }
+}
+
+/* =========================================
+   LIGHTNING OVERLAY (touch-triggered)
+   ========================================= */
+.lightning-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+    background: rgba(200, 225, 255, 0);
+    transition: background 0.05s ease;
+    mix-blend-mode: screen;
+}
+
+.lightning-overlay.strike {
+    animation: lightningStrike 0.55s ease-out forwards;
+}
+
+@keyframes lightningStrike {
+    0%   { background: rgba(200, 225, 255, 0); }
+    5%   { background: rgba(200, 225, 255, 0.55); }
+    12%  { background: rgba(200, 225, 255, 0.05); }
+    20%  { background: rgba(200, 225, 255, 0.35); }
+    35%  { background: rgba(200, 225, 255, 0.02); }
+    100% { background: rgba(200, 225, 255, 0); }
 }
 
 /* Rain Canvas */

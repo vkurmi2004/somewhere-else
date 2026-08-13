@@ -37,6 +37,10 @@
             <button id="thunder-toggle" class="btn-toggle" aria-pressed="false">OFF</button>
         </div>
         <div class="setting-group">
+            <span class="label-text">Night Sounds</span>
+            <button id="night-sounds-toggle" class="btn-toggle" aria-pressed="false">OFF</button>
+        </div>
+        <div class="setting-group">
             <span class="label-text">Timer</span>
             <div class="timer-options">
                 <button class="timer-btn" data-time="5">5m</button>
@@ -47,7 +51,13 @@
         </div>
     </div>
 
-    <main class="room-container">
+    <main class="room-container" id="room-container">
+        <!-- Moon in the sky (behind rain) -->
+        <div class="moon-container" aria-hidden="true">
+            <img src="../assets/moon.jpg" alt="" class="moon-img" id="moon-img">
+            <div class="moon-halo"></div>
+        </div>
+
         <!-- The window pane overlay -->
         <div class="window-overlay" aria-hidden="true">
             <div class="city-lights"></div>
@@ -55,10 +65,13 @@
             <div class="window-frame"></div>
         </div>
 
+        <!-- Lightning flash overlay triggered on touch -->
+        <div class="lightning-overlay" id="lightning-overlay" aria-hidden="true"></div>
+
         <canvas id="rain-canvas" aria-label="Animation of rain falling outside a window"></canvas>
         
         <div id="initial-message" class="initial-message fade-in">
-            <p>Nothing to do here.</p>
+            <p>Touch the window.</p>
         </div>
 
         <div class="completion-modal fade-in hidden" id="completion-modal" aria-live="polite">

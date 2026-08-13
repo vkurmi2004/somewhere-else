@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Doodle Room | Somewhere Else</title>
     <meta name="description" content="There is nothing to make here. Draw anyway.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✏️</text></svg>">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,12 +22,20 @@
         <button id="btn-leave" class="leave-link" aria-label="Leave Doodle Room">
             <span class="arrow">&larr;</span> Leave Room
         </button>
+        <!-- Mode indicators -->
+        <div class="header-right">
+            <div id="mirror-indicator" class="mode-badge" style="display:none;">⟺ Mirror</div>
+            <div id="glow-indicator" class="mode-badge glow-badge" style="display:none;">✦ Glow</div>
+        </div>
     </header>
 
     <main class="room-container">
         <!-- Canvas for drawing -->
         <canvas id="doodle-canvas" aria-label="Interactive drawing canvas"></canvas>
         
+        <!-- Cursor size preview ring -->
+        <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
+
         <!-- Intro Message -->
         <div id="initial-message" class="initial-message fade-in">
             <p>There is nothing to make here.<br>Draw anyway.</p>
@@ -35,40 +43,59 @@
 
         <!-- Toolbar -->
         <div class="toolbar" role="toolbar" aria-label="Drawing Tools">
-            
+
+            <!-- TOOLS -->
+            <div class="tool-group" role="group" aria-label="Tools">
+                <button class="tool-btn mode-btn active" data-mode="pen" id="tool-pen" aria-label="Pen" aria-pressed="true" title="Pen">✏️</button>
+                <button class="tool-btn mode-btn" data-mode="spray" id="tool-spray" aria-label="Spray" aria-pressed="false" title="Spray Paint">🌀</button>
+                <button class="tool-btn mode-btn" data-mode="eraser" id="tool-eraser" aria-label="Eraser" aria-pressed="false" title="Eraser">◻</button>
+            </div>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- BRUSH SIZES -->
             <div class="tool-group" role="group" aria-label="Brush Sizes">
-                <button class="tool-btn brush-size active" data-size="4" aria-label="Small Brush" aria-pressed="true">
+                <button class="tool-btn brush-size active" data-size="4" aria-label="Small Brush" aria-pressed="true" title="Small">
                     <span class="dot size-sm"></span>
                 </button>
-                <button class="tool-btn brush-size" data-size="12" aria-label="Medium Brush" aria-pressed="false">
+                <button class="tool-btn brush-size" data-size="14" aria-label="Medium Brush" aria-pressed="false" title="Medium">
                     <span class="dot size-md"></span>
                 </button>
-                <button class="tool-btn brush-size" data-size="24" aria-label="Large Brush" aria-pressed="false">
+                <button class="tool-btn brush-size" data-size="28" aria-label="Large Brush" aria-pressed="false" title="Large">
                     <span class="dot size-lg"></span>
                 </button>
             </div>
 
             <div class="toolbar-divider"></div>
-            
+
+            <!-- COLOR PALETTE -->
             <div class="tool-group color-palette" role="group" aria-label="Colors">
-                <button class="tool-btn color-btn active" data-color="#E0D8CC" aria-label="Warm Beige" aria-pressed="true" style="background-color: #E0D8CC;"></button>
-                <button class="tool-btn color-btn" data-color="#7B8B9E" aria-label="Muted Blue" aria-pressed="false" style="background-color: #7B8B9E;"></button>
-                <button class="tool-btn color-btn" data-color="#B6B0C6" aria-label="Soft Lavender" aria-pressed="false" style="background-color: #B6B0C6;"></button>
-                <button class="tool-btn color-btn" data-color="#7D8F81" aria-label="Muted Green" aria-pressed="false" style="background-color: #7D8F81;"></button>
-                <button class="tool-btn color-btn" data-color="#C29B93" aria-label="Soft Pink" aria-pressed="false" style="background-color: #C29B93;"></button>
+                <button class="tool-btn color-btn active" data-color="#E0D8CC" aria-label="Warm White" aria-pressed="true" style="background-color:#E0D8CC;"></button>
+                <button class="tool-btn color-btn" data-color="#7EC8E3" aria-label="Sky Blue" aria-pressed="false" style="background-color:#7EC8E3;"></button>
+                <button class="tool-btn color-btn" data-color="#B490E8" aria-label="Lavender" aria-pressed="false" style="background-color:#B490E8;"></button>
+                <button class="tool-btn color-btn" data-color="#6FEDB0" aria-label="Mint" aria-pressed="false" style="background-color:#6FEDB0;"></button>
+                <button class="tool-btn color-btn" data-color="#F4A261" aria-label="Amber" aria-pressed="false" style="background-color:#F4A261;"></button>
+                <button class="tool-btn color-btn" data-color="#E07070" aria-label="Rose" aria-pressed="false" style="background-color:#E07070;"></button>
+                <button class="tool-btn color-btn" data-color="#FDEEA3" aria-label="Yellow" aria-pressed="false" style="background-color:#FDEEA3;"></button>
             </div>
 
             <div class="toolbar-divider"></div>
 
-            <div class="tool-group" role="group" aria-label="History">
-                <button id="btn-undo" class="tool-btn action-btn" aria-label="Undo" disabled>↶</button>
-                <button id="btn-redo" class="tool-btn action-btn" aria-label="Redo" disabled>↷</button>
+            <!-- SPECIAL MODES -->
+            <div class="tool-group" role="group" aria-label="Special Modes">
+                <button class="tool-btn mode-btn" id="toggle-glow" aria-label="Glow Mode" aria-pressed="false" title="Glow Brush">✦</button>
+                <button class="tool-btn mode-btn" id="toggle-mirror" aria-label="Mirror Mode" aria-pressed="false" title="Mirror Drawing">⟺</button>
             </div>
 
             <div class="toolbar-divider"></div>
 
-            <button id="btn-clear" class="tool-btn action-btn clear-btn" aria-label="Clear Canvas">🗑</button>
-            
+            <!-- HISTORY & ACTIONS -->
+            <div class="tool-group" role="group" aria-label="Actions">
+                <button id="btn-undo" class="tool-btn action-btn" aria-label="Undo" disabled title="Undo">↶</button>
+                <button id="btn-redo" class="tool-btn action-btn" aria-label="Redo" disabled title="Redo">↷</button>
+                <button id="btn-save" class="tool-btn action-btn" aria-label="Save Drawing" title="Save as PNG">💾</button>
+                <button id="btn-clear" class="tool-btn action-btn clear-btn" aria-label="Clear Canvas" title="Clear">🗑</button>
+            </div>
         </div>
 
         <!-- Leave Confirmation Modal -->
